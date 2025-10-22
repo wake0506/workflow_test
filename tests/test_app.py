@@ -1,17 +1,31 @@
-import sys
-import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+import pytest
+from app.app import dedupe, add_numbers
 
-from app.app import dedupe
-
-def test_dedupe():
-    # 测试基础去重功能
-    input_data = [1, 2, 2, 3, 4, 4, 5]
-    expected = [1, 2, 3, 4, 5]
-    assert list(dedupe(input_data)) == expected
-    
-    # 测试空列表
-    assert list(dedupe([])) == []
-    
-    # 测试字符串去重
+def test_dedupe_function():
+    """测试去重功能"""
+    assert list(dedupe([1, 2, 2, 3])) == [1, 2, 3]
     assert list(dedupe(['a', 'b', 'b', 'c'])) == ['a', 'b', 'c']
+    assert list(dedupe([])) == []
+    assert list(dedupe([1, 2, 3])) == [1, 2, 3]
+
+class TestAdditionFunctionality:
+    """测试加法功能"""
+    
+    def test_add_positive_numbers(self):
+        """测试正数加法"""
+        assert add_numbers(2, 3) == 5
+        assert add_numbers(10, 15) == 25
+    
+    def test_add_negative_numbers(self):
+        """测试负数加法"""
+        assert add_numbers(-2, -3) == -5
+        assert add_numbers(-10, 5) == -5
+    
+    def test_add_float_numbers(self):
+        """测试浮点数加法"""
+        assert add_numbers(2.5, 3.5) == 6.0
+    
+    def test_add_invalid_input(self):
+        """测试无效输入"""
+        with pytest.raises(ValueError):
+            add_numbers("2", 3)
